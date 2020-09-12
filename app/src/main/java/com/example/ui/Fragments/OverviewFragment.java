@@ -2,21 +2,27 @@ package com.example.ui.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.TransitionInflater;
 import androidx.viewpager.widget.ViewPager;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ui.Adapter.Adapt1;
@@ -31,8 +37,12 @@ public class OverviewFragment extends Fragment {
 
     int id;
     ViewPager viewPager1, viewPager2;
-    float py,px;
+    float py, px;
     ArrayList<String> titles = new ArrayList<>();
+    CardView cardView,cardView2;
+    ConstraintLayout constraintLayout;
+    ImageView plus;
+    TextView t1,t2;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -61,6 +71,13 @@ public class OverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         viewPager1 = (ViewPager) view.findViewById(R.id.viewPage1);
         viewPager2 = (ViewPager) view.findViewById(R.id.view2);
+        cardView = (CardView) view.findViewById(R.id.cardView);
+        cardView2 = (CardView) view.findViewById(R.id.top);
+        constraintLayout = (ConstraintLayout) view.findViewById(R.id.linear);
+        plus = (ImageView) view.findViewById(R.id.plus);
+        t1 = (TextView) view.findViewById(R.id.textView2);
+        t2 = (TextView) view.findViewById(R.id.textView3);
+        set();
         return view;
     }
 
@@ -91,33 +108,34 @@ public class OverviewFragment extends Fragment {
                         break;
                     case MotionEvent.ACTION_UP:
                         if (Math.abs(motionEvent.getY() - py) > Math.abs(motionEvent.getX() - px)) {
-                            if((py-motionEvent.getY())>10) {
+                            if ((py - motionEvent.getY()) > 10) {
                                 DetailFragment fragment = DetailFragment.newInstance(id, titles);
-                                FragmentManager manager = getFragmentManager();
-                                FragmentTransaction transaction = manager.beginTransaction();
-                                transaction.replace(R.id.container, fragment);
-                                transaction.commit();
+                                fragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.trans));
+                                fragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
+                                getFragmentManager().beginTransaction().replace(R.id.container, fragment)
+                                        .addToBackStack("transaction")
+                                        .addSharedElement(cardView, cardView.getTransitionName())
+                                        .commit();
                                 return false;
-                            }
-                            else if((motionEvent.getY() - py)>(10)){
+                            } else if ((motionEvent.getY() - py) > (10)) {
                                 Intent intent = new Intent(getContext(), MainActivity.class);
                                 getActivity().startActivity(intent);
                             }
-                        }
-                        else {
-                            if((motionEvent.getX() - px)>10){
-                                if(id>0){
+                        } else {
+                            if ((motionEvent.getX() - px) > 10) {
+                                if (id > 0) {
                                     id--;
                                     viewPager1.setCurrentItem(id, true);
                                     viewPager2.setCurrentItem(id, true);
+                                    set();
                                     return false;
                                 }
-                            }
-                            else if((motionEvent.getX() - px)<(-10)){
-                                if(id<3){
+                            } else if ((motionEvent.getX() - px) < (-10)) {
+                                if (id < 3) {
                                     id++;
                                     viewPager1.setCurrentItem(id, true);
                                     viewPager2.setCurrentItem(id, true);
+                                    set();
                                     return false;
                                 }
                             }
@@ -127,6 +145,21 @@ public class OverviewFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    private void set(){
+        if(id%2==0){
+            t1.setTextColor(getResources().getColor(R.color.b12));
+            t2.setTextColor(getResources().getColor(R.color.b12));
+            constraintLayout.setBackgroundResource(R.drawable.back2);
+            plus.setBackgroundColor(getResources().getColor(R.color.b12));
+        }
+        else {
+            t1.setTextColor(getResources().getColor(R.color.b11));
+            t2.setTextColor(getResources().getColor(R.color.b11));
+            constraintLayout.setBackgroundResource(R.drawable.back3);
+            plus.setBackgroundColor(getResources().getColor(R.color.b11));
+        }
     }
 
 

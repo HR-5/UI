@@ -32,7 +32,7 @@
                     android:layout_marginStart="15dp"
                     android:padding="5dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background"
+                    android:src="@drawable/cardimg"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +43,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:padding="2dp"
-                    android:text="Jellyfish Cam Offers Stunning Views"
+                    android:text="Project Microsoft Hololenes"
                     android:textSize="18sp"
+                    android:textColor="#000000"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="@+id/imageView2"
@@ -55,6 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
+                    android:textColor="#333333"
                     android:text="3k views . 5 days "
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@+id/textView4"
@@ -76,7 +78,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background" />
+                android:background="#000000"
+                android:src="@drawable/ironman2" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

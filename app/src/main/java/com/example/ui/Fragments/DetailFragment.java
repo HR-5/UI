@@ -1,20 +1,26 @@
 package com.example.ui.Fragments;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionInflater;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +40,10 @@ public class DetailFragment extends Fragment {
     TextView titl;
     ImageView[] dash;
     float py, px;
+    CardView cardView;
+    ConstraintLayout constraintLayout;
+    ImageView plus;
+    TextView t1,t2;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -52,6 +62,10 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+        }
+        postponeEnterTransition();
         if (getArguments() != null) {
             id = getArguments().getInt("id");
             titles = (ArrayList<String>) getArguments().getSerializable("title");
@@ -64,6 +78,11 @@ public class DetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpage3);
+        cardView = (CardView) view.findViewById(R.id.cardView);
+        constraintLayout = (ConstraintLayout) view.findViewById(R.id.linear);
+        plus = (ImageView) view.findViewById(R.id.plus);
+        t1 = (TextView) view.findViewById(R.id.textView2);
+        t2 = (TextView) view.findViewById(R.id.textView3);
         titl = (TextView) view.findViewById(R.id.title);
         dash = new ImageView[4];
         dash[0] = (ImageView) view.findViewById(R.id.i1);
@@ -94,9 +113,12 @@ public class DetailFragment extends Fragment {
                         if (Math.abs(motionEvent.getY() - py) > Math.abs(motionEvent.getX() - px)) {
                             if ((motionEvent.getY() - py) > 10) {
                                 OverviewFragment fragment = OverviewFragment.newInstance(id);
+                                fragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.trans));
+                                fragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
                                 FragmentManager manager = getFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 transaction.replace(R.id.container, fragment);
+                                transaction.addSharedElement(cardView,"card");
                                 transaction.commit();
                                 break;
                             }
@@ -105,12 +127,16 @@ public class DetailFragment extends Fragment {
                                 if (id > 0) {
                                     id--;
                                     viewPager.setCurrentItem(id, true);
+                                    Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.fade_in);
+                                    titl.startAnimation(animation);
                                     set();
                                 }
                             } else if ((motionEvent.getX() - px) < (-10)) {
                                 if (id < 3) {
                                     id++;
                                     viewPager.setCurrentItem(id, true);
+                                    Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.fade_in);
+                                    titl.startAnimation(animation);
                                     set();
                                 }
                             }
@@ -129,6 +155,18 @@ public class DetailFragment extends Fragment {
                 dash[id].setImageResource(R.drawable.dashse);
             } else
                 dash[i].setImageResource(R.drawable.dash);
+        }
+        if(id%2==0){
+            t1.setTextColor(getResources().getColor(R.color.b12));
+            t2.setTextColor(getResources().getColor(R.color.b12));
+            constraintLayout.setBackgroundResource(R.drawable.back2);
+            plus.setBackgroundColor(getResources().getColor(R.color.b12));
+        }
+        else {
+            t1.setTextColor(getResources().getColor(R.color.b11));
+            t2.setTextColor(getResources().getColor(R.color.b11));
+            constraintLayout.setBackgroundResource(R.drawable.back3);
+            plus.setBackgroundColor(getResources().getColor(R.color.b11));
         }
 
     }

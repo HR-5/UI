@@ -10,92 +10,107 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <TextView
-            android:id="@+id/title"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/top"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/b11"
-            android:gravity="center"
-            android:paddingBottom="15dp"
-            android:text="Gaming"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="@+id/linear"
-            app:layout_constraintEnd_toEndOf="@+id/linear"
-            app:layout_constraintStart_toStartOf="@+id/linear"
-            app:layout_constraintTop_toTopOf="@+id/linear" />
-
-
-        <ImageView
-            android:id="@+id/ham"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="25dp"
-            android:scaleType="fitCenter"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/search"
-            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/search"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="25dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/seach" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/linear"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back2">
 
-        <ImageView
-            android:id="@+id/i3"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/dash"
-            app:layout_constraintBottom_toBottomOf="@+id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.55"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/i2"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/dash"
-            app:layout_constraintBottom_toBottomOf="@+id/i3"
-            app:layout_constraintEnd_toStartOf="@+id/i3" />
-
-        <ImageView
-            android:id="@+id/i4"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/dash"
-            app:layout_constraintBottom_toBottomOf="@+id/i2"
-            app:layout_constraintStart_toEndOf="@+id/i3" />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:paddingBottom="15dp"
+                    android:text="Gaming"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/linear"
+                    app:layout_constraintEnd_toEndOf="@+id/linear"
+                    app:layout_constraintStart_toStartOf="@+id/linear"
+                    app:layout_constraintTop_toTopOf="@+id/linear" />
 
 
-        <ImageView
-            android:id="@+id/i1"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/dash"
-            app:layout_constraintBottom_toBottomOf="@+id/i2"
-            app:layout_constraintEnd_toStartOf="@+id/i2" />
+                <ImageView
+                    android:id="@+id/ham"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="25dp"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/search"
+                    app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+                <ImageView
+                    android:id="@+id/search"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="25dp"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/seach" />
+
+                <ImageView
+                    android:id="@+id/i3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/dash"
+                    app:layout_constraintBottom_toBottomOf="@+id/title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.55"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:id="@+id/i2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/dash"
+                    app:layout_constraintBottom_toBottomOf="@+id/i3"
+                    app:layout_constraintEnd_toStartOf="@+id/i3" />
+
+                <ImageView
+                    android:id="@+id/i4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/dash"
+                    app:layout_constraintBottom_toBottomOf="@+id/i2"
+                    app:layout_constraintStart_toEndOf="@+id/i3" />
+
+
+                <ImageView
+                    android:id="@+id/i1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/dash"
+                    app:layout_constraintBottom_toBottomOf="@+id/i2"
+                    app:layout_constraintEnd_toStartOf="@+id/i2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:elevation="10dp"
+            android:transitionName="card"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title">
+            app:layout_constraintTop_toBottomOf="@+id/top">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -106,6 +121,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="POPULAR"
+                    android:textColor="@color/b12"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/view"
                     app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +143,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="THIS WEEK"
+                    android:textStyle="bold"
+                    android:textColor="@color/b12"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/view"
@@ -164,6 +183,16 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         </androidx.viewpager.widget.ViewPager>
+        <ImageView
+            android:id="@+id/plus"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/b12"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/plus"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

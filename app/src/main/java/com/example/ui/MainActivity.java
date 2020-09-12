@@ -74,6 +74,6 @@ public class MainActivity extends AppCompatActivity {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1);
         Intent intent = new Intent(this, SectionActivity.class);
         intent.putExtra("id", id);
-        startActivity(intent,options.toBundle());
+        startActivity(intent);
     }
 }

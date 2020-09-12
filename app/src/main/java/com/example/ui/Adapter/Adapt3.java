@@ -4,22 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.ui.R;
 
-import java.util.ArrayList;
+public class Adapt3 extends PagerAdapter {
 
-public class Adapt1 extends PagerAdapter {
-
-    ArrayList<String> titles;
     Context context;
 
-    public Adapt1(ArrayList<String> titles, Context context) {
-        this.titles = titles;
+    public Adapt3(Context context) {
         this.context = context;
     }
 
@@ -37,10 +34,14 @@ public class Adapt1 extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view  = layoutInflater.inflate(R.layout.viewpager1,container,false);
-        TextView textView = view.findViewById(R.id.title);
-        textView.setText(titles.get(position));
+        View view  = layoutInflater.inflate(R.layout.viewpager3,container,false);
         container.addView(view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
+        RecyclerAdapt adapt = new RecyclerAdapt();
+        recyclerView.setHasFixedSize(true);
+        final GridLayoutManager layoutManager = new GridLayoutManager(context, 1);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapt);
         return view;
     }
 
@@ -48,5 +49,4 @@ public class Adapt1 extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
-
 }

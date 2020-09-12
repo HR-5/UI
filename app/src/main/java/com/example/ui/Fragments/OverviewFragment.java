@@ -1,29 +1,38 @@
 package com.example.ui.Fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.ui.Adapter.Adapt1;
 import com.example.ui.Adapter.Adapt2;
+import com.example.ui.MainActivity;
 import com.example.ui.R;
+import com.example.ui.SectionActivity;
 
 import java.util.ArrayList;
 
 public class OverviewFragment extends Fragment {
 
     int id;
-    ViewPager viewPager1,viewPager2;
-    volatile int pageid;
+    ViewPager viewPager1, viewPager2;
+    float py,px;
+    ArrayList<String> titles = new ArrayList<>();
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -33,7 +42,7 @@ public class OverviewFragment extends Fragment {
     public static OverviewFragment newInstance(int id) {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
-        args.putInt("id",id);
+        args.putInt("id", id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,15 +64,15 @@ public class OverviewFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayList<String> titles = new ArrayList<>();
         titles.add("Highlights");
         titles.add("Science");
         titles.add("Gaming");
         titles.add("Movies");
-        Adapt1 adapt1 = new Adapt1(titles,getContext());
+        Adapt1 adapt1 = new Adapt1(titles, getContext());
         viewPager1.setAdapter(adapt1);
         viewPager1.setOffscreenPageLimit(3);
         viewPager1.setCurrentItem(id);
@@ -71,48 +80,61 @@ public class OverviewFragment extends Fragment {
         viewPager2.setAdapter(adapt2);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.setCurrentItem(id);
-        viewPager1.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager1.canScrollHorizontally(0);
+        viewPager2.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                viewPager2.setCurrentItem(position,true);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        py = motionEvent.getY();
+                        px = motionEvent.getX();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (Math.abs(motionEvent.getY() - py) > Math.abs(motionEvent.getX() - px)) {
+                            if((py-motionEvent.getY())>10) {
+                                DetailFragment fragment = DetailFragment.newInstance(id, titles);
+                                FragmentManager manager = getFragmentManager();
+                                FragmentTransaction transaction = manager.beginTransaction();
+                                transaction.replace(R.id.container, fragment);
+                                transaction.commit();
+                                return false;
+                            }
+                            else if((motionEvent.getY() - py)>(10)){
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                getActivity().startActivity(intent);
+                            }
+                        }
+                        else {
+                            if((motionEvent.getX() - px)>10){
+                                if(id>0){
+                                    id--;
+                                    viewPager1.setCurrentItem(id, true);
+                                    viewPager2.setCurrentItem(id, true);
+                                    return false;
+                                }
+                            }
+                            else if((motionEvent.getX() - px)<(-10)){
+                                if(id<3){
+                                    id++;
+                                    viewPager1.setCurrentItem(id, true);
+                                    viewPager2.setCurrentItem(id, true);
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                }
+                return true;
             }
         });
-        viewPager2.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                viewPager1.setCurrentItem(position,true);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-//        viewPager1.setPageTransformer(true,new ViewStack());
     }
 
 
-    private class ViewStack implements ViewPager.PageTransformer
-    {
+    private class ViewStack implements ViewPager.PageTransformer {
 
         @Override
         public void transformPage(@NonNull View page, float position) {
-            if(position>=0){
+            if (position >= 0) {
                 page.setTranslationX(100);
             }
         }

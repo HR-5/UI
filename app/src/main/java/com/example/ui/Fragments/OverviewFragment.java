@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,24 +37,26 @@ import java.util.ArrayList;
 
 public class OverviewFragment extends Fragment {
 
-    int id;
+    int id,flag;
     ViewPager viewPager1, viewPager2;
     float py, px;
     ArrayList<String> titles = new ArrayList<>();
-    CardView cardView,cardView2;
+    CardView cardView,cardView2,viewcard;
     ConstraintLayout constraintLayout;
     ImageView plus;
     TextView t1,t2;
+    Adapt2 adapt2;
 
     public OverviewFragment() {
         // Required empty public constructor
     }
 
 
-    public static OverviewFragment newInstance(int id) {
+    public static OverviewFragment newInstance(int id,int flag) {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
         args.putInt("id", id);
+        args.putInt("flag", flag);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,6 +66,7 @@ public class OverviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             id = getArguments().getInt("id");
+            flag = getArguments().getInt("flag");
         }
     }
 
@@ -72,11 +77,16 @@ public class OverviewFragment extends Fragment {
         viewPager1 = (ViewPager) view.findViewById(R.id.viewPage1);
         viewPager2 = (ViewPager) view.findViewById(R.id.view2);
         cardView = (CardView) view.findViewById(R.id.cardView);
+        viewcard = (CardView) view.findViewById(R.id.viewcard);
         cardView2 = (CardView) view.findViewById(R.id.top);
         constraintLayout = (ConstraintLayout) view.findViewById(R.id.linear);
         plus = (ImageView) view.findViewById(R.id.plus);
         t1 = (TextView) view.findViewById(R.id.textView2);
         t2 = (TextView) view.findViewById(R.id.textView3);
+        if (flag==0) {
+            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.up);
+            viewcard.startAnimation(animation);
+        }
         set();
         return view;
     }
@@ -91,13 +101,14 @@ public class OverviewFragment extends Fragment {
         titles.add("Movies");
         Adapt1 adapt1 = new Adapt1(titles, getContext());
         viewPager1.setAdapter(adapt1);
-        viewPager1.setOffscreenPageLimit(3);
         viewPager1.setCurrentItem(id);
-        Adapt2 adapt2 = new Adapt2(getContext());
-        viewPager2.setAdapter(adapt2);
-        viewPager2.setOffscreenPageLimit(3);
-        viewPager2.setCurrentItem(id);
+        viewPager1.setClipChildren(false);
         viewPager1.canScrollHorizontally(0);
+        viewPager1.setOffscreenPageLimit(adapt1.getCount());
+        adapt2 = new Adapt2(getContext());
+        viewPager2.setAdapter(adapt2);
+        viewPager2.setOffscreenPageLimit(1);
+        viewPager2.setCurrentItem(id);
         viewPager2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -109,12 +120,13 @@ public class OverviewFragment extends Fragment {
                     case MotionEvent.ACTION_UP:
                         if (Math.abs(motionEvent.getY() - py) > Math.abs(motionEvent.getX() - px)) {
                             if ((py - motionEvent.getY()) > 10) {
-                                DetailFragment fragment = DetailFragment.newInstance(id, titles);
+                                DetailFragment fragment = DetailFragment.newInstance(id, titles,0);
                                 fragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.trans));
                                 fragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
                                 getFragmentManager().beginTransaction().replace(R.id.container, fragment)
                                         .addToBackStack("transaction")
                                         .addSharedElement(cardView, cardView.getTransitionName())
+                                        .addSharedElement(viewcard,viewcard.getTransitionName())
                                         .commit();
                                 return false;
                             } else if ((motionEvent.getY() - py) > (10)) {
@@ -128,6 +140,7 @@ public class OverviewFragment extends Fragment {
                                     viewPager1.setCurrentItem(id, true);
                                     viewPager2.setCurrentItem(id, true);
                                     set();
+                                    shake();
                                     return false;
                                 }
                             } else if ((motionEvent.getX() - px) < (-10)) {
@@ -136,6 +149,7 @@ public class OverviewFragment extends Fragment {
                                     viewPager1.setCurrentItem(id, true);
                                     viewPager2.setCurrentItem(id, true);
                                     set();
+                                    shake();
                                     return false;
                                 }
                             }
@@ -162,14 +176,7 @@ public class OverviewFragment extends Fragment {
         }
     }
 
-
-    private class ViewStack implements ViewPager.PageTransformer {
-
-        @Override
-        public void transformPage(@NonNull View page, float position) {
-            if (position >= 0) {
-                page.setTranslationX(100);
-            }
-        }
+    private void shake(){
+        adapt2.anim();
     }
 }

@@ -18,7 +18,7 @@ public class SectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section);
         int id = getIntent().getIntExtra("id",0);
-        OverviewFragment overviewFragment = OverviewFragment.newInstance(id);
+        OverviewFragment overviewFragment = OverviewFragment.newInstance(id,0);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.container,overviewFragment);

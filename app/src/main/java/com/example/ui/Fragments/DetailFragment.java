@@ -35,12 +35,12 @@ import java.util.Collection;
 public class DetailFragment extends Fragment {
 
     ViewPager viewPager;
-    int id;
+    int id,flag;
     ArrayList<String> titles;
     TextView titl;
     ImageView[] dash;
     float py, px;
-    CardView cardView;
+    CardView cardView,viewcard;
     ConstraintLayout constraintLayout;
     ImageView plus;
     TextView t1,t2;
@@ -50,11 +50,12 @@ public class DetailFragment extends Fragment {
     }
 
 
-    public static DetailFragment newInstance(int id, ArrayList<String> titles) {
+    public static DetailFragment newInstance(int id, ArrayList<String> titles,int flag) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putInt("id", id);
         args.putSerializable("title", titles);
+        args.putInt("flag",flag);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,6 +70,7 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             id = getArguments().getInt("id");
             titles = (ArrayList<String>) getArguments().getSerializable("title");
+            flag = getArguments().getInt("flag");
         }
     }
 
@@ -79,6 +81,7 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpage3);
         cardView = (CardView) view.findViewById(R.id.cardView);
+        viewcard = (CardView) view.findViewById(R.id.viewcard);
         constraintLayout = (ConstraintLayout) view.findViewById(R.id.linear);
         plus = (ImageView) view.findViewById(R.id.plus);
         t1 = (TextView) view.findViewById(R.id.textView2);
@@ -97,7 +100,7 @@ public class DetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Adapt3 adapt3 = new Adapt3(getContext());
+        Adapt3 adapt3 = new Adapt3(getContext(),flag);
         viewPager.setAdapter(adapt3);
         viewPager.setCurrentItem(id);
         viewPager.setOffscreenPageLimit(3);
@@ -112,13 +115,14 @@ public class DetailFragment extends Fragment {
                     case MotionEvent.ACTION_UP:
                         if (Math.abs(motionEvent.getY() - py) > Math.abs(motionEvent.getX() - px)) {
                             if ((motionEvent.getY() - py) > 10) {
-                                OverviewFragment fragment = OverviewFragment.newInstance(id);
+                                OverviewFragment fragment = OverviewFragment.newInstance(id,1);
                                 fragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.trans));
                                 fragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
                                 FragmentManager manager = getFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 transaction.replace(R.id.container, fragment);
                                 transaction.addSharedElement(cardView,"card");
+                                transaction.addSharedElement(viewcard,viewcard.getTransitionName());
                                 transaction.commit();
                                 break;
                             }
@@ -126,18 +130,17 @@ public class DetailFragment extends Fragment {
                             if ((motionEvent.getX() - px) > 10) {
                                 if (id > 0) {
                                     id--;
-                                    viewPager.setCurrentItem(id, true);
-                                    Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.fade_in);
-                                    titl.startAnimation(animation);
-                                    set();
+                                    DetailFragment fragment = DetailFragment.newInstance(id, titles,1);
+                                    getFragmentManager().beginTransaction().replace(R.id.container, fragment)
+                                            .commit();
+
                                 }
                             } else if ((motionEvent.getX() - px) < (-10)) {
                                 if (id < 3) {
                                     id++;
-                                    viewPager.setCurrentItem(id, true);
-                                    Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.fade_in);
-                                    titl.startAnimation(animation);
-                                    set();
+                                    DetailFragment fragment = DetailFragment.newInstance(id, titles,1);
+                                    getFragmentManager().beginTransaction().replace(R.id.container, fragment)
+                                            .commit();
                                 }
                             }
                         }
@@ -149,6 +152,8 @@ public class DetailFragment extends Fragment {
     }
 
     private void set() {
+        Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.fade_in);
+        titl.startAnimation(animation);
         titl.setText(titles.get(id));
         for (int i = 0; i < 4; i++) {
             if (id == i) {

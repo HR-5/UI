@@ -69,11 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void click(int id) {
         Pair<View,String> pair = Pair.create((View) constraintLayouts[id], "cons");
-        Pair<View,String> pair1 = Pair.create((View) textViews[id], "title");
-        Pair<View,String> pair2 = Pair.create((View) textViews[id], "title");
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair);
         Intent intent = new Intent(this, SectionActivity.class);
         intent.putExtra("id", id);
-        startActivity(intent);
+        startActivity(intent,options.toBundle());
     }
 }

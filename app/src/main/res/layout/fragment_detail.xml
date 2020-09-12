@@ -19,8 +19,8 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
                 android:id="@+id/linear"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/back2">
 
@@ -143,8 +143,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="THIS WEEK"
-                    android:textStyle="bold"
                     android:textColor="@color/b12"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/view"
@@ -174,22 +174,31 @@
         </androidx.cardview.widget.CardView>
 
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpage3"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/viewcard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:transitionName="viewcard"
             app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-        </androidx.viewpager.widget.ViewPager>
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpage3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+            </androidx.viewpager.widget.ViewPager>
+        </androidx.cardview.widget.CardView>
+
         <ImageView
             android:id="@+id/plus"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginEnd="15dp"
-            android:background="@color/b12"
             android:layout_marginBottom="15dp"
+            android:background="@color/b12"
             android:src="@drawable/plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cardView" />

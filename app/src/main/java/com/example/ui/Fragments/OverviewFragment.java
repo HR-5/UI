@@ -106,7 +106,7 @@ public class OverviewFragment extends Fragment {
         viewPager1.setCurrentItem(id);
         viewPager1.setClipChildren(false);
         viewPager1.canScrollHorizontally(0);
-        viewPager1.setPageMargin(-500);
+        viewPager1.setPageMargin(-430);
         viewPager1.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

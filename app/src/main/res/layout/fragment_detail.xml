@@ -196,9 +196,10 @@
             android:id="@+id/plus"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@color/b12"
+            android:elevation="10dp"
             android:src="@drawable/plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cardView" />

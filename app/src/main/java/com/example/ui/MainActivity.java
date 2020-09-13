@@ -15,6 +15,8 @@ import android.os.Bundle;
 import androidx.core.util.Pair;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void click(int id) {
-        Pair<View,String> pair = Pair.create((View) constraintLayouts[id], "cons");
+        Pair<View, String> pair = Pair.create((View) constraintLayouts[id], "cons");
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair);
         Intent intent = new Intent(this, SectionActivity.class);
         intent.putExtra("id", id);
-        startActivity(intent,options.toBundle());
+        startActivity(intent, options.toBundle());
     }
 }

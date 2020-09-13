@@ -12,6 +12,7 @@
         android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textSize="35sp"
+        android:textAlignment="center"
         android:transitionName="title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

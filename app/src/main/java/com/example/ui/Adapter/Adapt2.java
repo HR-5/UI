@@ -17,7 +17,7 @@ import com.example.ui.R;
 public class Adapt2 extends PagerAdapter {
 
     Context context;
-    CardView cardView;
+    CardView cardView,cardView2;
     Animation animation;
 
     public Adapt2(Context context) {
@@ -42,7 +42,9 @@ public class Adapt2 extends PagerAdapter {
         cardView = (CardView) view.findViewById(R.id.imgcard);
         animation = AnimationUtils.loadAnimation(context,R.anim.bounce);
         cardView.startAnimation(animation);
+        cardView2 = (CardView) view.findViewById(R.id.cardView2);
         container.addView(view);
+        anim();
         return view;
     }
 
@@ -54,5 +56,6 @@ public class Adapt2 extends PagerAdapter {
     public void anim(){
         animation = AnimationUtils.loadAnimation(context,R.anim.bounce);
         cardView.startAnimation(animation);
+        cardView2.startAnimation(animation);
     }
 }

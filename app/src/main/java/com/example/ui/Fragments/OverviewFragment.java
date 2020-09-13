@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,14 +39,14 @@ import java.util.ArrayList;
 
 public class OverviewFragment extends Fragment {
 
-    int id,flag;
+    int id, flag;
     ViewPager viewPager1, viewPager2;
     float py, px;
     ArrayList<String> titles = new ArrayList<>();
-    CardView cardView,cardView2,viewcard;
+    CardView cardView, cardView2, viewcard;
     ConstraintLayout constraintLayout;
     ImageView plus;
-    TextView t1,t2;
+    TextView t1, t2;
     Adapt2 adapt2;
 
     public OverviewFragment() {
@@ -52,7 +54,7 @@ public class OverviewFragment extends Fragment {
     }
 
 
-    public static OverviewFragment newInstance(int id,int flag) {
+    public static OverviewFragment newInstance(int id, int flag) {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
         args.putInt("id", id);
@@ -83,7 +85,7 @@ public class OverviewFragment extends Fragment {
         plus = (ImageView) view.findViewById(R.id.plus);
         t1 = (TextView) view.findViewById(R.id.textView2);
         t2 = (TextView) view.findViewById(R.id.textView3);
-        if (flag==0) {
+        if (flag == 0) {
             Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.up);
             viewcard.startAnimation(animation);
         }
@@ -104,6 +106,33 @@ public class OverviewFragment extends Fragment {
         viewPager1.setCurrentItem(id);
         viewPager1.setClipChildren(false);
         viewPager1.canScrollHorizontally(0);
+        viewPager1.setPageMargin(-500);
+        viewPager1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        py = motionEvent.getY();
+                        px = motionEvent.getX();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        motionEvent.getY();
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        if ((motionEvent.getY() - py) > (50)) {
+                            constraintLayout.setTransitionName("cons" + (id + 1));
+                            Pair<View, String> pair = Pair.create((View) constraintLayout, constraintLayout.getTransitionName());
+                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pair);
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            getActivity().startActivity(intent, options.toBundle());
+                        } else {
+                            return false;
+                        }
+                        return false;
+                }
+                return true;
+            }
+        });
         viewPager1.setOffscreenPageLimit(adapt1.getCount());
         adapt2 = new Adapt2(getContext());
         viewPager2.setAdapter(adapt2);
@@ -120,18 +149,20 @@ public class OverviewFragment extends Fragment {
                     case MotionEvent.ACTION_UP:
                         if (Math.abs(motionEvent.getY() - py) > Math.abs(motionEvent.getX() - px)) {
                             if ((py - motionEvent.getY()) > 10) {
-                                DetailFragment fragment = DetailFragment.newInstance(id, titles,0);
+                                DetailFragment fragment = DetailFragment.newInstance(id, titles, 0);
                                 fragment.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.trans));
                                 fragment.setEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
                                 getFragmentManager().beginTransaction().replace(R.id.container, fragment)
-                                        .addToBackStack("transaction")
                                         .addSharedElement(cardView, cardView.getTransitionName())
-                                        .addSharedElement(viewcard,viewcard.getTransitionName())
+                                        .addSharedElement(viewcard, viewcard.getTransitionName())
                                         .commit();
                                 return false;
                             } else if ((motionEvent.getY() - py) > (10)) {
+                                constraintLayout.setTransitionName("cons" + (id + 1));
+                                Pair<View, String> pair = Pair.create((View) constraintLayout, constraintLayout.getTransitionName());
+                                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pair);
                                 Intent intent = new Intent(getContext(), MainActivity.class);
-                                getActivity().startActivity(intent);
+                                getActivity().startActivity(intent, options.toBundle());
                             }
                         } else {
                             if ((motionEvent.getX() - px) > 10) {
@@ -161,14 +192,13 @@ public class OverviewFragment extends Fragment {
         });
     }
 
-    private void set(){
-        if(id%2==0){
+    private void set() {
+        if (id % 2 == 0) {
             t1.setTextColor(getResources().getColor(R.color.b12));
             t2.setTextColor(getResources().getColor(R.color.b12));
             constraintLayout.setBackgroundResource(R.drawable.back2);
             plus.setBackgroundColor(getResources().getColor(R.color.b12));
-        }
-        else {
+        } else {
             t1.setTextColor(getResources().getColor(R.color.b11));
             t2.setTextColor(getResources().getColor(R.color.b11));
             constraintLayout.setBackgroundResource(R.drawable.back3);
@@ -176,7 +206,7 @@ public class OverviewFragment extends Fragment {
         }
     }
 
-    private void shake(){
+    private void shake() {
         adapt2.anim();
     }
 }
